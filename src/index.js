@@ -29,7 +29,10 @@ async function onFormSubmit(e) {
     const searchData = await getSearch(value);
 
     const totalImg = searchData.totalHits;
-    Notify.info(`Hooray! We found ${totalImg} images.`);
+    if (totalImg !== 0) {
+      Notify.info(`Hooray! We found ${totalImg} images.`);
+      refs.button.style.display = 'block';
+    }
 
     if (searchData.total === 0) {
       Notify.failure("Unfortunately, we can't find any image");
@@ -37,8 +40,6 @@ async function onFormSubmit(e) {
 
     const markup = createMarkup(searchData.hits);
     refs.gallery.insertAdjacentHTML('beforeend', markup);
-
-    refs.button.style.display = 'block';
   } catch (error) {
     console.error('Error in form submission:', error);
     Notify.failure('Error in form submission');
