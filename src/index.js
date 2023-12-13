@@ -1,66 +1,73 @@
-import { fetchBreeds, fetchCatByBreed } from './cat-api.js';
-import { createCatMarkup } from './cat-markup.js';
+import { getSearch } from './gallery-api.js';
+import { Notify } from 'notiflix';
+import { createMarkup } from './gallary-marcup.js';
 
-const breedSelect = document.querySelector('.breed-select');
-const catInfoDiv = document.querySelector('.cat-card');
-const loader = document.querySelector('.loader');
-const error = document.querySelector('.error');
+const refs = {
+  form: document.querySelector('.search-form'),
+  gallery: document.querySelector('.gallery'),
+  button: document.querySelector('.load-more'),
+  // card: document.querySelector('.photo-card'),
+  // img: document.querySelector('.photo-img'),
+  // stats: document.querySelector('.info-stat'),
+};
+refs.form.addEventListener('submit', onFormSubmit);
 
-export function showLoader() {
-  loader.style.display = 'block';
-  catInfoDiv.style.display = 'none';
-  error.style.display = 'none';
+async function onFormSubmit(e) {
+  e.preventDefault();
+  const { value } = refs.form.elements.searchQuery;
+
+  refs.button.style.display = 'none';
+
+  if (!value) {
+    Notify.failure('Please, input some text!');
+    return;
+  }
+
+  refs.gallery.innerHTML = '';
+
+  try {
+    const searchData = await getSearch(value);
+
+    const totalImg = searchData.totalHits;
+    Notify.info(`Hooray! We found ${totalImg} images.`);
+
+    if (searchData.total === 0) {
+      Notify.failure("Unfortunately, we can't find any image");
+    }
+
+    const markup = createMarkup(searchData.hits);
+    refs.gallery.insertAdjacentHTML('beforeend', markup);
+
+    refs.button.style.display = 'block';
+  } catch (error) {
+    console.error('Error in form submission:', error);
+    Notify.failure('Error in form submission');
+  }
 }
 
-function hideLoader() {
-  loader.style.display = 'none';
-}
+refs.button.addEventListener('click', onButtonClick);
 
-function showCatInfo() {
-  catInfoDiv.style.display = 'block';
-}
+let page = 2;
 
-function showError() {
-  error.style.display = 'block';
-}
+async function onButtonClick() {
+  try {
+    const { value } = refs.form.elements.searchQuery;
+    const searchData = await getSearch(value, page);
 
-function generateBreedOptions(data) {
-  return data.map(breed => {
-    const option = document.createElement('option');
-    option.value = breed.id;
-    option.textContent = breed.name;
-    return option;
-  });
-}
+    if (searchData.hits.length === 0) {
+      refs.button.style.display = 'none';
+      Notify.failure(
+        "We're sorry, but you've reached the end of search results."
+      );
+      return;
+    }
 
-fetchBreeds()
-  .then(data => {
-    showCatInfo();
-    const breedOptions = generateBreedOptions(data);
-    breedSelect.append(...breedOptions);
-  })
-  .catch(error => {
-    showError();
-    console.error(error);
-  })
-  .finally(() => {
-    hideLoader();
-  });
+    const markup = createMarkup(searchData.hits);
+    refs.gallery.insertAdjacentHTML('beforeend', markup);
 
-breedSelect.addEventListener('change', onBreedSelectChange);
-
-function onBreedSelectChange(e) {
-  fetchCatByBreed(e.target.value)
-    .then(data => {
-      showCatInfo();
-      catInfoDiv.innerHTML = createCatMarkup(data[0]);
-    })
-    .catch(error => {
-      showError();
-      console.error('Error fetching cat data:', error);
-      throw error;
-    })
-    .finally(() => {
-      hideLoader();
-    });
+    page += 1;
+  } catch (error) {
+    console.error('Error in button click:', error);
+    Notify.failure('Error in button click');
+  }
 }

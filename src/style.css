@@ -1,50 +1,109 @@
-.container {
-  padding: 45px 0;
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Koulen&family=Lato&family=Nunito&family=Playfair+Display:ital@1&family=Prata&family=Raleway:ital,wght@1,100&family=Roboto&family=Roboto+Condensed&family=Teko&display=swap');
+@import '/node_modules/reset-css/reset.css';
+
+* {
+  box-sizing: border-box;
 }
-.col {
+ul {
+  list-style-type: none;
+}
+.header {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 120px;
+  padding: 15px;
+  background-color: rgb(33, 75, 214);
+  margin-bottom: 20px;
+  box-shadow: 6px 14px 16px -12px rgba(23, 21, 23, 0.62);
+}
+.css-input {
+  width: 250px;
+  padding: 10px;
+  font-size: 14px;
+  border-width: 0px;
+  border-color: #cccccc;
+  background-color: #ffffff;
+  color: #000000;
+  border-style: solid;
+  border-radius: 4px;
+  box-shadow: 0px 0px 5px rgba(66, 66, 66, 0.75);
+  text-shadow: -30px 0px 2px rgba(66, 66, 66, 0.13);
+}
+.css-input:focus {
+  outline: none;
+}
+.search-form {
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 10px;
 }
-.loader {
-  width: 170px;
+.gallery {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
 }
-.error {
-  display: none;
-  color: red;
-}
-.breed-select {
-  margin-top: 45px;
-  margin-bottom: 15px;
-  padding: 10px;
-  width: 200px;
-  height: 50px;
-  border: 1px solid rgb(177, 175, 175);
+
+.photo-card {
+  width: 250px;
+  height: 200px;
   border-radius: 5px;
-  color: rgba(0, 0, 0, 0.487);
+  -webkit-box-shadow: 6px 14px 31px -12px rgba(23, 21, 23, 0.62);
+  -moz-box-shadow: 6px 14px 31px -12px rgba(23, 21, 23, 0.62);
+  box-shadow: 6px 14px 31px -12px rgba(23, 21, 23, 0.62);
+  overflow: hidden;
 }
-.cat-card {
-  width: 450px;
-  height: 400px;
-}
-.cat-card-img {
+.photo-img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  border-radius: 5px;
+  height: 140px;
   margin-bottom: 10px;
 }
-.cat-card-descr {
-  color: rgba(0, 0, 0, 0.487);
+.info-wrapper {
+  text-align: center;
 }
-.cat-card-temp {
-  color: black;
-  font-weight: bold;
-  font-style: normal;
+.info {
+  font-size: 10px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
 }
-.cat-card-temperament {
-  font-style: italic;
-  color: rgba(0, 0, 0, 0.487);
-  text-align: start;
+.info-item {
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+.load-more.btn {
+  display: none;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+
+.btn {
+  font-family: Roboto, sans-serif;
+  font-weight: 0;
+  font-size: 14px;
+  color: #fff;
+  background-color: #0066cc;
+  padding: 10px 20px;
+  border: 2px solid #0066cc;
+  box-shadow: 0px 0px 5px rgba(66, 66, 66, 0.75);
+  border-radius: 4px;
+  transition: 1000ms;
+  transform: translateY(0);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+}
+
+.btn:hover {
+  transition: 1000ms;
+  padding: 10px 50px;
+  transform: translateY(-0px);
+  background-color: #fff;
+  color: #0066cc;
+  border: solid 2px #0066cc;
 }
