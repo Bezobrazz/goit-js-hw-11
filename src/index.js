@@ -6,9 +6,6 @@ const refs = {
   form: document.querySelector('.search-form'),
   gallery: document.querySelector('.gallery'),
   button: document.querySelector('.load-more'),
-  // card: document.querySelector('.photo-card'),
-  // img: document.querySelector('.photo-img'),
-  // stats: document.querySelector('.info-stat'),
 };
 refs.form.addEventListener('submit', onFormSubmit);
 
