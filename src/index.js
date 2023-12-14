@@ -19,30 +19,19 @@ function showLoadMoreBtn() {
   refs.button.style.display = 'block';
 }
 
-// function updateLoadMoreBtnVisibility(page, totalImg) {
-//   const resultsPerPage = 40;
-//   const totalPages = Math.ceil(totalImg / resultsPerPage);
-
-//   if (page < totalPages) {
-//     showLoadMoreBtn();
-//   } else {
-//     hideLoadMoreBtn();
-//   }
-// }
-
-function updateLoadMoreBtnVisibility(page, totalImg, endOfResults) {
+function updateLoadMoreBtnVisibility(page, totalImg) {
   const resultsPerPage = 40;
   const totalPages = Math.ceil(totalImg / resultsPerPage);
 
-  if (page < totalPages && !endOfResults) {
+  if (page < totalPages) {
     showLoadMoreBtn();
   } else {
     hideLoadMoreBtn();
-    if (endOfResults) {
-      Notify.warning(
-        "We're sorry, but you've reached the end of search results."
-      );
-    }
+  }
+  if (page === totalPages) {
+    Notify.warning(
+      "We're sorry, but you've reached the end of search results."
+    );
   }
 }
 
@@ -68,7 +57,7 @@ async function onFormSubmit(e) {
     if (totalImg !== 0) {
       Notify.info(`Hooray! We found ${totalImg} images.`);
     }
-    updateLoadMoreBtnVisibility(page, totalImg, false);
+    updateLoadMoreBtnVisibility(page, totalImg);
 
     if (searchData.total === 0) {
       Notify.failure("Unfortunately, we can't find any image");
@@ -94,12 +83,11 @@ async function onButtonClick() {
     totalImg = searchData.totalHits;
 
     if (searchData.hits.length === 0) {
-      updateLoadMoreBtnVisibility(page, totalImg, true);
+      updateLoadMoreBtnVisibility(page, totalImg);
       return;
     }
 
-    // updateLoadMoreBtnVisibility(page, totalImg);
-    updateLoadMoreBtnVisibility(page, totalImg, false);
+    updateLoadMoreBtnVisibility(page, totalImg);
 
     const markup = createMarkup(searchData.hits);
     refs.gallery.insertAdjacentHTML('beforeend', markup);
