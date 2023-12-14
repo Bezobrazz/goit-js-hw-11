@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { Notify } from 'notiflix';
 
 const pixabayApi = axios.create({
   baseURL: 'https://pixabay.com/api/',
@@ -13,17 +12,12 @@ const pixabayApi = axios.create({
 });
 
 export async function getSearch(query, page) {
-  try {
-    const response = await pixabayApi.get('', {
-      params: {
-        q: query,
-        page: page,
-      },
-    });
+  const { data } = await pixabayApi.get('', {
+    params: {
+      q: query,
+      page: page,
+    },
+  });
 
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching data:', error);
-    Notify.failure('Error fetching data');
-  }
+  return data;
 }
