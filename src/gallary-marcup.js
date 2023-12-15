@@ -11,7 +11,10 @@ export const createMarkup = photos => {
         downloads,
       }) =>
         `<div class="photo-card">
+				<a href="${largeImageURL}">
 				<img class="photo-img" src="${webformatURL}" alt="${tags}" loading="lazy" />
+				</a>
+				
 				<div class="info">
 					<div class="info-wrapper">
 						<p class="info-item">

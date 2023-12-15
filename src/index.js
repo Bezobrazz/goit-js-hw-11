@@ -2,6 +2,13 @@ import { getSearch } from './gallery-api.js';
 import { Notify } from 'notiflix';
 import { createMarkup } from './gallary-marcup.js';
 
+import SimpleLightbox from 'simplelightbox';
+
+import 'simplelightbox/dist/simple-lightbox.min.css';
+const gallery = new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',
+  captionDelay: 250,
+});
 const refs = {
   form: document.querySelector('.search-form'),
   gallery: document.querySelector('.gallery'),
@@ -65,6 +72,7 @@ async function onFormSubmit(e) {
 
     const markup = createMarkup(searchData.hits);
     refs.gallery.insertAdjacentHTML('beforeend', markup);
+    gallery.refresh();
   } catch (error) {
     console.error('Error in form submission:', error);
     Notify.failure('Error in form submission');
@@ -91,6 +99,7 @@ async function onButtonClick() {
 
     const markup = createMarkup(searchData.hits);
     refs.gallery.insertAdjacentHTML('beforeend', markup);
+    gallery.refresh();
   } catch (error) {
     console.error('Error in button click:', error);
     Notify.failure('Error in button click');
